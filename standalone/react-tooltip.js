@@ -362,7 +362,7 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
   function ReactTooltip(props) {
     _classCallCheck(this, ReactTooltip);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReactTooltip).call(this, props));
+    var _this = _possibleConstructorReturn(this, (ReactTooltip.__proto__ || Object.getPrototypeOf(ReactTooltip)).call(this, props));
 
     _this.state = {
       place: 'top', // Direction of tooltip
@@ -894,19 +894,31 @@ exports.default = function (e, target, node, place, effect, offset, countTransfo
   // Get the edge offset of the tooltip
 
   var getTipOffsetLeft = function getTipOffsetLeft(place) {
-    var offset_X = defaultOffset[place].l;
+    var offset_X = 0;
+    try {
+      offset_X = defaultOffset[place].l;
+    } catch (err) {}
     return mouseX + offset_X + extraOffset_X;
   };
   var getTipOffsetRight = function getTipOffsetRight(place) {
-    var offset_X = defaultOffset[place].r;
+    var offset_X = 0;
+    try {
+      offset_X = defaultOffset[place].r;
+    } catch (err) {}
     return mouseX + offset_X + extraOffset_X;
   };
   var getTipOffsetTop = function getTipOffsetTop(place) {
-    var offset_Y = defaultOffset[place].t;
+    var offset_Y = 0;
+    try {
+      offset_Y = defaultOffset[place].t;
+    } catch (err) {}
     return mouseY + offset_Y + extraOffset_Y;
   };
   var getTipOffsetBottom = function getTipOffsetBottom(place) {
-    var offset_Y = defaultOffset[place].b;
+    var offset_Y = 0;
+    try {
+      offset_Y = defaultOffset[place].b;
+    } catch (err) {}
     return mouseY + offset_Y + extraOffset_Y;
   };
 

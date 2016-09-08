@@ -28,19 +28,31 @@ export default function (e, target, node, place, effect, offset, countTransform)
 
   // Get the edge offset of the tooltip
   const getTipOffsetLeft = (place) => {
-    const offset_X = defaultOffset[place].l
+    let offset_X = 0
+    try {
+      offset_X = defaultOffset[place].l
+    } catch (err) {}
     return mouseX + offset_X + extraOffset_X
   }
   const getTipOffsetRight = (place) => {
-    const offset_X = defaultOffset[place].r
+    let offset_X = 0
+    try {
+      offset_X = defaultOffset[place].r
+    } catch (err) {}
     return mouseX + offset_X + extraOffset_X
   }
   const getTipOffsetTop = (place) => {
-    const offset_Y = defaultOffset[place].t
+    let offset_Y = 0
+    try {
+      offset_Y = defaultOffset[place].t
+    } catch (err) {}
     return mouseY + offset_Y + extraOffset_Y
   }
   const getTipOffsetBottom = (place) => {
-    const offset_Y = defaultOffset[place].b
+    let offset_Y = 0
+    try {
+      offset_Y = defaultOffset[place].b
+    } catch (err) {}
     return mouseY + offset_Y + extraOffset_Y
   }
 
