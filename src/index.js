@@ -43,8 +43,14 @@ class ReactTooltip extends Component {
     countTransform: PropTypes.bool,
     afterShow: PropTypes.func,
     afterHide: PropTypes.func,
-    disable: PropTypes.bool
-  }
+    disable: PropTypes.bool,
+    scrollHide: PropTypes.bool,
+    resizeHide: PropTypes.bool
+  };
+
+  static defaultProps = {
+    resizeHide: true
+  };
 
   constructor (props) {
     super(props)
@@ -73,6 +79,7 @@ class ReactTooltip extends Component {
       'hideTooltip',
       'globalRebuild',
       'globalShow',
+      'globalHide',
       'onWindowResize'
     ])
 
@@ -94,7 +101,7 @@ class ReactTooltip extends Component {
   componentDidMount () {
     this.setStyleHeader() // Set the style to the <link>
     this.bindListener() // Bind listener for tooltip
-    this.bindWindowEvents() // Bind global event for static method
+    this.bindWindowEvents(this.props.resizeHide) // Bind global event for static method
   }
 
   componentWillReceiveProps (props) {
@@ -231,6 +238,15 @@ class ReactTooltip extends Component {
 
     // If it is focus event or called by ReactTooltip.show, switch to `solid` effect
     const switchToSolid = e instanceof window.FocusEvent || isGlobalCall
+
+    // if it need to skip adding hide listener to scroll
+    let scrollHide = true
+    if (e.currentTarget.getAttribute('data-scroll-hide')) {
+      scrollHide = e.currentTarget.getAttribute('data-scroll-hide') === 'true'
+    } else if (this.props.scrollHide != null) {
+      scrollHide = this.props.scrollHide
+    }
+
     this.setState({
       placeholder,
       place: e.currentTarget.getAttribute('data-place') || this.props.place || 'top',
@@ -250,7 +266,7 @@ class ReactTooltip extends Component {
         ? e.currentTarget.getAttribute('data-count-transform') === 'true'
         : (this.props.countTransform != null ? this.props.countTransform : true)
     }, () => {
-      this.addScrollListener(e)
+      if (scrollHide) this.addScrollListener(e)
       this.updateTooltip(e)
 
       if (getContent && Array.isArray(getContent)) {
@@ -303,12 +319,16 @@ class ReactTooltip extends Component {
   /**
    * When mouse leave, hide tooltip
    */
-  hideTooltip () {
+  hideTooltip (e, hasTarget) {
+    if (!this.mount) return
+    if (hasTarget) {
+      // Don't trigger other elements belongs to other ReactTooltip
+      const targetArray = this.getTargetArray(this.props.id)
+      const isMyElement = targetArray.some(ele => ele === e.currentTarget)
+      if (!isMyElement || !this.state.show) return
+    }
     const {delayHide} = this.state
     const {afterHide} = this.props
-
-    if (!this.mount) return
-
     const resetState = () => {
       const isVisible = this.state.show
       this.setState({
