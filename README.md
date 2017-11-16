@@ -78,7 +78,7 @@ Check the example [React-tooltip Test](http://wwayne.com/react-tooltip)
 3. When using react component as tooltip, you can have many `<ReactTooltip />` in a page but they should have different **id**
 
 ## Static Methods
-###ReactTooltip.hide(target)
+### ReactTooltip.hide(target)
 
 > Hide the tooltip manually, the target is optional, if no target passed in, all exitent tooltip will be hiden
 
@@ -91,11 +91,11 @@ import ReactTooltip from 'react-tooltip'
 <ReactTooltip />
 ```
 
-###ReactTooltip.rebuild()
+### ReactTooltip.rebuild()
 
 > Rebinding all tooltips
 
-###ReactTooltip.show(target)
+### ReactTooltip.show(target)
 
 > Show specific tooltip manually, for example:
 
